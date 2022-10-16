@@ -13,7 +13,6 @@ const userSchema = new mongoose.Schema({
 		type:String,
 		required:true
 	}
-
 })
 
-export default mongoose.model("todo-User",userSchema)
+mongoose.model("TodoUser",userSchema)

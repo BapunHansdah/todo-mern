@@ -1,25 +1,33 @@
 import bcrypt from 'bcryptjs'
-import jwt from 'jwt'
-import User from '../schema/userSchema.js'
+import mongoose from 'mongoose'
+import jwt from 'jsonwebtoken'
+import '../schema/userSchema.js'
 
+const User = mongoose.model("TodoUser")
 
 export const register = async (req,res,next) =>{
-	if(!req.body.name || !req.body.email || !req.body.password){
-		throw new Error("name ,email and password")
+
+	const {name , email ,password } = req.body
+	if(!name || !email || !password){
+		return res.status(403).json('inputs cant be empty')
 	}
 	try{
-		const salt = await bcryptjs.genSalt(10)
-		const hashPassword = await bcryptjs.hash(req.body.password,salt)
-
+		const user = await User.findOne({email})
+		if(user){
+			return res.status(403).json('user already exist')
+		}
+		const salt = await bcrypt.genSalt(10)
+		const hashPassword = await bcrypt.hash(password,salt)
 		const newUser = new User({
-			name:req.body.name,
-			email:req.body.email,
+			name:name,email,
 			password:hashPassword
 		})
 		await newUser.save()
-		return res.status(201).('new user created')
+		return res.status(201).json('new user created')
 	}
 	catch(err){
 		return next(err)
 	}
 }
+
+

@@ -10,9 +10,9 @@ const taskSchema =new mongoose.Schema({
 		required:true
 	},
 	by:{
-		ref:'todo-User',
+		ref:'todoUser',
 		required:true
 	},
 },{timestamps:true})
 
-export default mongoose.model("todo-task",taskSchema)
+mongoose.model("todoTask",taskSchema)
