@@ -7,9 +7,11 @@ const taskSchema =new mongoose.Schema({
 	},
 	completed:{
 		type:Boolean,
-		required:true
+		required:true,
+		default:false
 	},
 	by:{
+		type:String,
 		ref:'todoUser',
 		required:true
 	},

@@ -21,7 +21,7 @@ export const updateUser = async (req,res,next) =>{
 	try{
 	   	const user =await User.findOne({email})
 	    if(user){
-		return res.status(403).json('user already exist')
+		  return res.status(403).json('user already exist')
 	    }
        const updatedUser = await User.findByIdAndUpdate(id,{name,email},{new:true})
        return res.status(200).json(updatedUser)
@@ -33,6 +33,7 @@ export const updateUser = async (req,res,next) =>{
 
 export const getUserInfo = async(req,res,next)=>{
 	const {id} = req.user
+	
 
 	try{
 	   const findUserInfo = await User.findOne({_id:id}).select('name email')
