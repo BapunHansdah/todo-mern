@@ -20,7 +20,9 @@ export const updateUser = async (req,res,next) =>{
 
 	try{
 	   	const user =await User.findOne({email})
-	    if(user){
+        // console.log(user._id.toString())
+
+	    if(user && user._id.toString() !== id){
 		  return res.status(403).json('user already exist')
 	    }
        const updatedUser = await User.findByIdAndUpdate(id,{name,email},{new:true})

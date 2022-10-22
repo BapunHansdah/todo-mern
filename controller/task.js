@@ -18,7 +18,7 @@ export const createTask = async (req,res,next) =>{
     	title,completed,by:id
         })
         await newTask.save()
-        return res.status(200).json("task saved succesfully")
+        return res.status(200).json(newTask)
      }
      catch(err){
        return next(err)
@@ -92,3 +92,4 @@ export const deleteAllTask = async (req,res,next)=>{
 		return next(err)
 	}
 }
+

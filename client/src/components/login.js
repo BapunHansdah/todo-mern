@@ -1,18 +1,16 @@
 
 // import { LockClosedIcon } from '@heroicons/react/20/solid'
-import {Link} from 'react-router-dom'
+import {useState,useEffect} from 'react'
+import {Link,useNavigate,Navigate} from 'react-router-dom'
+import LoginComp from './logincomp'
+import axios from 'axios'
+import useAuth from '../hook/useAuth'
+
 
 export default function Login() {
-  return (
-    <div className="bg-gray-100 h-screen mx-auto p-2">
-       <div className="max-w-sm mx-auto text-center font-bold text-3xl text-blue-300 px-5 py-5 mt-24 p-5 bg-black rounded shadow">MERN-TODO</div>    
-       <form className="max-w-sm mx-auto bg-white px-5 py-5 m-2 rounded shadow">
-          <div className="text-center font-bold text-2xl">Sign In</div>
-          <div className="m-2"><input className="w-full p-2 border-2 rounded" placeholder="email"/></div>
-          <div className="m-2"><input className="w-full p-2 border-2 rounded" placeholder="password"/></div>
-          <div className="m-2"><button className="p-2 text-white bg-black rounded">Sign In</button></div>
-          <div className="m-2">Not a Member? <span className="text-blue-400"><Link to="/register">Register</Link></span></div>
-       </form>
-    </div>
-  )
+
+  const {auth} = useAuth()
+  if(auth === undefined) return <>Loading</>
+  return !auth ? <LoginComp /> : <Navigate to="/" />
+
 }
