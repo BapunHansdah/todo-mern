@@ -96,6 +96,12 @@ function Main(){
 
   async function editTask(e){
      e.preventDefault()
+    
+    if(task.length <= 0){
+      return "task cant be empty"
+   }
+
+
      try{
         await axios.put(`/api/tasks/${editId}`,{
         	title:task
@@ -219,7 +225,7 @@ function Main(){
            <div className="mx-auto p-2">
            	  <div className="max-w-sm mx-auto p-5 text-white bg-black">
            	    <div className="font-bold">Welcome to <span className="text-blue-400 "><Link to="/feed"> MERN-TODO</Link></span></div>
-           	    <div className="mb-5 text-sm text-blue-500">Go to feed &gt; </div>
+           	    <div className="mb-5 text-sm text-blue-500"><Link to="/feed">Go to feed &gt; </Link></div>
            	    <div>Hello , {userInfo.name}</div>
            	    <div className="opacity-50 text-sm">{userInfo.email}</div>
            	    <button className="bg-white text-black p-1 text-sm mt-2 rounded" onClick={openModal}>edit profile</button>

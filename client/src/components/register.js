@@ -2,7 +2,10 @@
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 import {useState} from 'react'
+import {useNavigate} from 'react-router-dom'
 export default function Register() {
+  
+  const navigate = useNavigate()
 
   const [registerInfo ,setRegisterInfo] = useState({})
 
@@ -16,6 +19,7 @@ export default function Register() {
         await axios.post('/api/auth/register',{
         name,email,password
         })
+        navigate('/login')
     }
     catch(err){
       console.log(err)

@@ -24,6 +24,7 @@ export default function Feed(){
 
 	return(
 		<div className="max-w-sm mx-auto">
+		<div className="mx-auto bg-black text-blue-500 p-4"><Link to="/">Go to your profile &gt;</Link></div>
 		  {
 		  	feedTask.map((m,i)=>{
 		  		return(
