@@ -7,6 +7,7 @@ import {BiUserCircle} from 'react-icons/bi'
 import {GrClose} from 'react-icons/gr'
 import Modal from 'react-modal'
 import {Link} from 'react-router-dom'
+import moment from 'moment'
 
 
 Modal.setAppElement("#root")
@@ -23,6 +24,7 @@ function Main(){
     const [isopenModal,setIsOpenModal] = useState(false)
     // const [completed,setComplete] = useState(false)
     const [editId,setEditId] = useState("")
+
 
 
     const navigate = useNavigate()
@@ -47,7 +49,6 @@ function Main(){
 	       title:task
 	  	})
 	  	// const data = { title: task, complete: false }
-
 	  	setTask("")
 	  	setTaskList([...taskList,{...data}])
 	  	setIsEditing(false)
@@ -116,12 +117,26 @@ function Main(){
      }
   }
 
+  function cancelEdit(e){
+    e.preventDefault()
+  	setIsEditing(false)
+  	setEditId(null)
+
+  }
+
  function editingTask(id,title){
     setEditId(id)
-  	setIsEditing(!isEditing)
+
+   //  if(id === editId){
+  	// 	setIsEditing(false)
+  	// }else{
+  	//   setIsEditing(true)
+  	// }
+  	setIsEditing(true)
+
   	setTask(title)
-    
   }
+
 
   // function editInfo(){
   //    setInfo(userInfo)
@@ -152,7 +167,6 @@ function Main(){
 	     })
 	 setUserInfo(info)
 	 setIsOpenModal(false)
-	 console.log(info)
      }
 
      catch(err){
@@ -204,16 +218,23 @@ function Main(){
 		<>
            <div className="mx-auto p-2">
            	  <div className="max-w-sm mx-auto p-5 text-white bg-black">
-           	    <div className="font-bold mb-5">Welcome to <span className="text-blue-400 "><Link to="/feed"> MERN-TODO</Link></span></div>
+           	    <div className="font-bold">Welcome to <span className="text-blue-400 "><Link to="/feed"> MERN-TODO</Link></span></div>
+           	    <div className="mb-5 text-sm text-blue-500">Go to feed &gt; </div>
            	    <div>Hello , {userInfo.name}</div>
            	    <div className="opacity-50 text-sm">{userInfo.email}</div>
            	    <button className="bg-white text-black p-1 text-sm mt-2 rounded" onClick={openModal}>edit profile</button>
+           	    &nbsp;&nbsp;
            	    <button className="bg-red-900 text-white p-1 text-sm mt-2 rounded" onClick={logOut}>Log Out</button>
 
 
            	  </div>
            	  <form className="max-w-sm mx-auto mt-5" onSubmit={!isEditing ? addTask : editTask }>
-           	    <div className="flex gap-2"><input onChange={handleChange} value={task} name="title" className="p-2 w-8/12  border-2 rounded" placeholder="write your task"/><button className={`rounded w-4/12 ${!isEditing ? "bg-black" : "bg-orange-600" } text-white hover:opacity-80`}>{!isEditing ? 'Add Task' : 'Edit Task' }</button></div>
+           	    <div className="flex gap-2"><input onChange={handleChange} value={task} name="title" className="p-2 w-8/12  border-2 rounded" placeholder="write your task"/>
+           	       <button className={`rounded w-4/12 ${!isEditing ? "bg-black" : "bg-orange-600" } text-white hover:opacity-80`}>{!isEditing ? 'Add Task' : 'Edit Task' }</button>
+           	       {
+           	       	isEditing ? <button onClick={cancelEdit} className={`rounded w-4/12 text-white hover:opacity-80 bg-black`}>Cancel</button> : <></>
+           	       }
+           	    </div>
            	  </form>
 
               <Modal isOpen={isopenModal}>
@@ -240,15 +261,22 @@ function Main(){
            	    {
            	    	taskList && taskList.map((task,ind)=>{
            	    		return (
-           	                    <div key={ind} className={`flex items-center ${task._id === editId ? "border-l-2 border-b-2 border-green-800" : "" } border-b border-black justify-between`}>
-           	                         <div className="flex justify-center w-1/12 border"><input type="checkbox" defaultChecked={task.completed} onChange={(e)=>completeTask(e,task._id)} className="accent-green-600 bg-black text-white" /></div>
-           	                         <div className="w-9/12 border">{task.title}</div>
-           	                         <div className="flex justify-center w-1/12 border">
-           	                             <button onClick={()=>editingTask(task._id,task.title)} className="rounded opacity-100 hover:opacity-50"><BiEdit size={20}/></button>
-           	                         </div>
-           	                         <div className="flex justify-center w-1/12 border">
-           	                             <button onClick={()=>deleteTask(task._id)} className="opacity-100 hover:opacity-50" disabled={!isEditing ? false : true  }><FiTrash2 style={{opacity:`${isEditing ? "0.5" : "1"}`}} size={20}/></button>
-           	                         </div>
+           	    			    <div key={ind} className={`${task._id === editId && isEditing? "border-l-2 border-b-2 border-green-800 " : "" } border-b border-black`}>
+	           	                    <div className={`flex items-center justify-between`}>
+	           	                         <div className="flex justify-center w-1/12 border"><input type="checkbox" defaultChecked={task.completed} onChange={(e)=>completeTask(e,task._id)} className="accent-green-600 bg-black text-white" /></div>
+	           	                         <div className="w-9/12 border">{task.title}</div>
+	           	                         <div className="flex justify-center w-1/12 border">
+	           	                             <button onClick={()=>editingTask(task._id,task.title)} className="rounded opacity-100 hover:opacity-50" disabled={task._id === editId && isEditing ? true : false  }><BiEdit style={{opacity:`${task._id === editId && isEditing ? "0.5" : "1"}`}} size={20}/></button>
+	           	                         </div>
+	           	                         <div className="flex justify-center w-1/12 border">
+	           	                             <button onClick={()=>deleteTask(task._id)} className="opacity-100 hover:opacity-50" disabled={task._id === editId && isEditing ? true : false  }><FiTrash2 style={{opacity:`${task._id === editId && isEditing ? "0.5" : "1"}`}} size={20}/></button>
+	           	                         </div>
+	           	                    </div>
+	           	                    <div className="flex text-xs  justify-end border">
+	           	                         {/*${task.createdAt.toDateString()}*/}
+	           	           
+	           	                         <div className="flex p-1 rounded">{`${moment(task.createdAt).format("MMM Do YY HH:mm")}`}</div>
+	           	                    </div>
            	                    </div>
            	    			   )
            	    	})
