@@ -27,6 +27,17 @@ export const createTask = async (req,res,next) =>{
 
 }
 
+export const getFeedTasks=async(req,res,next)=>{
+     try{
+     	const getFeedTasks = await Task.find({}).populate("by","name")
+     	return res.status(200).json(getFeedTasks)
+     }catch(err){
+     	return next(err)
+     }
+}
+
+
+
 export const getAllTask = async (req,res,next)=>{
      const {id} = req.user
      try{
@@ -34,6 +45,16 @@ export const getAllTask = async (req,res,next)=>{
        return res.status(200).json(getTasks)
      }
      catch(err){
+     	return next(err)
+     }
+}
+
+export const getOtherUserTask=async (req,res,next) =>{
+     const {userID} = req.params
+     try{
+     	const getOtherTasks = await Task.find({by:userID})
+     	return res.status(200).json(getOtherTasks)
+     }catch(err){
      	return next(err)
      }
 }

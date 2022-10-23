@@ -12,7 +12,7 @@ const taskSchema =new mongoose.Schema({
 	},
 	by:{
 		type:String,
-		ref:'todoUser',
+		ref:'TodoUser',
 		required:true
 	},
 },{timestamps:true})

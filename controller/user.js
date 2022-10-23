@@ -13,6 +13,15 @@ const User = mongoose.model('TodoUser')
 // 		return next(error)
 // 	}
 // }
+export const getOtherUserProfile=async(req,res,next) =>{
+	const {userID} =req.params
+    try{
+    	const getProfile = await User.findOne({_id:userID}).select("name email")
+    	return res.status(200).json(getProfile)
+    }catch(err){
+    	return next(err)
+    }
+}
 
 export const updateUser = async (req,res,next) =>{
 	const {name,email} = req.body
