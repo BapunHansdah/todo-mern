@@ -36,7 +36,7 @@ export default function Feed(){
 		  			     </div>
 		  		      </div>
 		  		)
-		  	})
+		  	}).reverse()
 		  }
 		  </div>
 		)
